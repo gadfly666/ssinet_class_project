@@ -2,8 +2,9 @@ package network.host;
 
 import config.Constant;
 import network.Packet;
+import elements.Element;
 
-public class SourceQueue {
+public class SourceQueue  extends Element{
     private int sourceId;
     private int destinationId;
     private long front;
