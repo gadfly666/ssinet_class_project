@@ -17,7 +17,7 @@ public class GenerationEvent extends Event {
 			SourceQueue sq = (SourceQueue)elem;
 			Packet p = sq.dequeue(this.startTime);
 			p.setId(numSent);
-			p.state = new StateP1();
+			p.state = new StateP1(sq);
 		}
 	}
 }
