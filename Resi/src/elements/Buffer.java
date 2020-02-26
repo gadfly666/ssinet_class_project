@@ -7,6 +7,11 @@ import events.Event;
 public class Buffer extends Element {
 	public ArrayList<Event> allEvents = new ArrayList<Event>();
 	
+	/**
+	 * Xay dung phuong thuc insertEvent thuc hien viec
+	 * chen mot Event co ten la ev.
+	 * @param ev
+	 */
 	public void insertEvents(Event ev)
 	{
 		long endTime = ev.endTime;
