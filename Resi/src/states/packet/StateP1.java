@@ -10,4 +10,9 @@ public class StateP1 extends State {
 	{
 		this.elem = e;
 	}
+	
+	public void act()
+	{
+		
+	}
 }
