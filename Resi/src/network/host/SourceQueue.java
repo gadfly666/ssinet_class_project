@@ -4,13 +4,15 @@ import config.Constant;
 import network.Packet;
 import elements.Element;
 import java.util.*;
+import events.Event;
 
 public class SourceQueue  extends Element{
     private int sourceId;
     private int destinationId;
     private long front;
     
-    public ArrayList<Packet> list = new ArrayList<Packet>();
+    public ArrayList<Packet> allPackets = new ArrayList<Packet>();
+    public ArrayList<Event> allEvents = new ArrayList<Event>(); 
 
     public SourceQueue(int sourceId, int destinationId){
         this.sourceId = sourceId;
@@ -24,7 +26,7 @@ public class SourceQueue  extends Element{
         front++;
         double timeSent = front * Constant.HOST_DELAY;
         Packet p = new Packet(-1, sourceId, destinationId, timeSent);
-        list.add(p);
+        allPackets.add(p);
         return p;
     }
 
