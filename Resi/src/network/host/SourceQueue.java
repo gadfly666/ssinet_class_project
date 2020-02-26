@@ -5,11 +5,14 @@ import network.Packet;
 import elements.Element;
 import java.util.*;
 import events.Event;
+import states.sourcequeue.*;
+import states.State;
 
 public class SourceQueue  extends Element{
     private int sourceId;
     private int destinationId;
     private long front;
+    public State state = new Sq1(this);
     
     public ArrayList<Packet> allPackets = new ArrayList<Packet>();
     public ArrayList<Event> allEvents = new ArrayList<Event>(); 
