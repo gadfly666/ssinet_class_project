@@ -3,9 +3,9 @@ package events;
 import elements.*;
 
 public abstract class Event {
-	public int pid; //packet ID
-	public int startTime;
-	public int endTime;
+	public long pid; //packet ID
+	public long startTime;
+	public long endTime;
 	
 	public void execute(Element elem)
 	{}
