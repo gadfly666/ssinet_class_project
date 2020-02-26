@@ -2,20 +2,27 @@ package network.host;
 
 import config.Constant;
 import network.Packet;
+import elements.Buffer;
 import elements.Element;
 import java.util.*;
 import events.Event;
 import states.sourcequeue.*;
 import states.State;
 
-public class SourceQueue  extends Element{
+public class SourceQueue  extends Buffer{
     private int sourceId;
     private int destinationId;
     private long front;
     public State state = new Sq1(this);
     
     public ArrayList<Packet> allPackets = new ArrayList<Packet>();
-    public ArrayList<Event> allEvents = new ArrayList<Event>(); 
+       
+    public SourceQueue(int sourceId)
+    {
+    	this.sourceId = sourceId;
+    	this.destinationId = sourceId;
+    	this.front = -1;
+    }
 
     public SourceQueue(int sourceId, int destinationId){
         this.sourceId = sourceId;
