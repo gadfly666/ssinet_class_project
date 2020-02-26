@@ -12,6 +12,14 @@ public class Sq1 extends State {
 		this.elem = e;
 	}
 	
+	/**
+	 * Phuong thuc act dung de goi khi ma mot phan tu thay doi trang thai
+	 * O day, phan tu Source queue khi o trang thai Sq1 thi
+	 * no se kiem tra xem danh sach cac su kien (sap xay ra) co
+	 * su kien sinh goi tin tiep theo chua?
+	 * Neu chua se tao ra su kien nay. Thoi diem xay ra su kien nay la
+	 * tuong lai (mot Constant.HOST_DELAY nua)
+	 */
 	public void act()
 	{
 		SourceQueue sQueue = (SourceQueue)elem;
