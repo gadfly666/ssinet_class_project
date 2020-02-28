@@ -25,7 +25,7 @@ public class Sq1 extends State {
 		SourceQueue sQueue = (SourceQueue)elem;
 		if(sQueue.allEvents.isEmpty())
 		{
-			Event e = new GenerationEvent();
+			Event e = new GenerationEvent(elem);
 			e.startTime = (long)sQueue.getNextPacketTime();
 			e.endTime = e.startTime;
 			sQueue.allEvents.add(e);
