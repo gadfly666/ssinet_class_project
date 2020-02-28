@@ -3,9 +3,10 @@ package custom.fattree;
 //import javafx.util.Pair;
 //import kotlin.Triple;
 //import kotlin.TuplesKt;
-import org.javatuples.* ;
+import javatuples.* ;
 import network.Topology;
 import network.Node;
+
 
 import routing.RoutingAlgorithm;
 import routing.RoutingPath;
@@ -77,11 +78,15 @@ public class FatTreeRoutingAlgorithm implements RoutingAlgorithm {
                 suffixTables.put(aggSwitch, suffixTable);
 
                 // create prefix table
-                Map<Triplet<Integer, Integer, Integer>, Integer> prefixTable
+                Map<javatuples.Triplet<Integer, Integer, Integer>, Integer> prefixTable
                         = new HashMap<>();
-                for (int e = 0; e < k / 2; e++) {
+                /*javatuples.Triplet<Integer, String, String> triplet 
+                            = new javatuples.Triplet<Integer, String, String>(Integer.valueOf(1),  
+                                                "GeeksforGeeks", "A computer portal");*/ 
+                  
+                                  for (int e = 0; e < k / 2; e++) {
                     int edgeSwitch = offset + k * k / 4 + e;
-                    prefixTable.put(new Triplet<>(10, p, e), edgeSwitch);
+                    prefixTable.put(new javatuples.Triplet<>(10, p, e), edgeSwitch);
                 }
                 prefixTables.put(aggSwitch, prefixTable);
 
