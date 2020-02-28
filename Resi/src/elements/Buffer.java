@@ -3,9 +3,12 @@ package elements;
 import java.util.ArrayList;
 
 import events.Event;
+import network.layers.PhysicalLayer;
 
-public class Buffer extends Element {
+public abstract class Buffer extends Element {
 	public ArrayList<Event> allEvents = new ArrayList<Event>();
+	
+	public PhysicalLayer phyLayer;
 	
 	/**
 	 * Xay dung phuong thuc insertEvent thuc hien viec
