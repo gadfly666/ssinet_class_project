@@ -1,6 +1,10 @@
 package states.packet;
 
 import states.State;
+import config.Constant;
+import elements.ExitBuffer;
+import events.Event;
+import events.LeavingSourceQueueEvent;
 import network.Packet;
 import network.host.SourceQueue;
 
@@ -33,7 +37,19 @@ public class StateP1 extends State {
 		}
 		if(sQueue.allPackets.get(0) == this.p)
 		{
-			
+			ExitBuffer exb = sQueue.phyLayer.EXBs[0];//Kiem tra xem EXB co cho trong hay khong?
+			int index = exb.indexOfEmpty();
+			if(index < Constant.QUEUE_SIZE)
+			{
+				Event e = new LeavingSourceQueueEvent();
+				//e.startTime = 
+				sQueue.insertEvents(e);
+			}
+			/*boolean successfullyInserted = exb.insertPacket(this.p);
+			if(successfullyInserted)
+			{
+				sQueue.allPackets.remove(0);
+			}*/
 		}
 	}
 }
