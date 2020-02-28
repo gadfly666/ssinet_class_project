@@ -1,5 +1,5 @@
 package elements;
 
-public class EntranceBuffer extends Buffer {
+public class EntranceBuffer extends LimitedBuffer {
 
 }
