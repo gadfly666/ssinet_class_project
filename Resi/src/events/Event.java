@@ -7,6 +7,8 @@ public abstract class Event {
 	public long startTime;
 	public long endTime;
 	
-	public void execute(Element elem)
+	public Element elem;
+	
+	public void execute()
 	{}
 }
