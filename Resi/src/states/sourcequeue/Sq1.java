@@ -23,12 +23,30 @@ public class Sq1 extends State {
 	public void act()
 	{
 		SourceQueue sQueue = (SourceQueue)elem;
-		if(sQueue.allEvents.isEmpty())
+		if(notYetAddGenerationEvent(sQueue))//Kiem tra xem Source Queue da co event tao goi tin moi chua?
 		{
 			Event e = new GenerationEvent(elem);
 			e.startTime = (long)sQueue.getNextPacketTime();
 			e.endTime = e.startTime;
-			sQueue.allEvents.add(e);
+			sQueue.insertEvents(e);//ma nguon cu dung pthuc add la khong dung
 		}
+	}
+	
+	public boolean notYetAddGenerationEvent(SourceQueue sQueue)
+	//Kiem tra xem Source Queue da co event tao goi tin moi chua?
+	{
+		long nextPacketTime = (long)sQueue.getNextPacketTime();
+		for(int i = 0; i < sQueue.allEvents.size(); i++)
+		{
+			if(sQueue.allEvents.get(i) instanceof GenerationEvent)
+			{
+				if(((GenerationEvent)sQueue.allEvents.get(i)).startTime 
+						== nextPacketTime)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
