@@ -1,5 +1,5 @@
 package elements;
 
-public class ExitBuffer extends Buffer {
+public class ExitBuffer extends LimitedBuffer {
 	
 }
