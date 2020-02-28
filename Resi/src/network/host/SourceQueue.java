@@ -29,6 +29,15 @@ public class SourceQueue  extends Buffer{
         this.destinationId = destinationId;
         this.front = -1;
     }
+    
+    public void setDestionationID(int destionationID)
+    {
+    	this.destinationId = destionationID;
+    }
+    public int getDestionationID()
+    {
+    	return this.destinationId;
+    }
 
     public Packet dequeue(long currentTime) {
         if (this.isEmpty(currentTime)) return null;
