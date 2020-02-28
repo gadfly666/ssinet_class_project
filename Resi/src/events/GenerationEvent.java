@@ -21,6 +21,7 @@ public class GenerationEvent extends Event {
 			if(p == null) return;
 			p.setId(numSent);
 			p.state = new StateP1(sq, p);
+			p.state.act();
 			if(sq.state instanceof Sq1)
 			{
 				sq.state = new Sq2(sq);
