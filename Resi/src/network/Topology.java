@@ -134,12 +134,11 @@ public class Topology {
     public void setSimulator(Simulator sim)
     {
     	for (Host host : hosts) {
-            host.clear();
             host.physicalLayer.sim = sim;
         }
 
         for (Switch sw: switches) {
-            sw.clear();
+            
         }
         
         sim.network = this;
