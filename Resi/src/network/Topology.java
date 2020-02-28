@@ -6,6 +6,7 @@ import graph.Graph;
 import network.host.Host;
 
 import routing.RoutingAlgorithm;
+import simulator.Simulator;
 
 import java.util.*;
 
@@ -128,6 +129,20 @@ public class Topology {
         for (Switch sw: switches) {
             sw.clear();
         }
+    }
+    
+    public void setSimulator(Simulator sim)
+    {
+    	for (Host host : hosts) {
+            host.clear();
+            host.physicalLayer.sim = sim;
+        }
+
+        for (Switch sw: switches) {
+            sw.clear();
+        }
+        
+        sim.network = this;
     }
 
     public boolean checkDeadlock(){
