@@ -25,6 +25,11 @@ public abstract class Buffer extends Element {
 			allEvents.add(ev);
 			return;
 		}
+		if(allEvents.size() == 0)
+		{
+			allEvents.add(ev);
+			return;
+		}
 		boolean found = false;
 		for(i = 0; i < allEvents.size() && !found; i++ )
 		{
@@ -37,4 +42,6 @@ public abstract class Buffer extends Element {
 		allEvents.add(i, ev);
 		
 	}
+	
+	
 }
