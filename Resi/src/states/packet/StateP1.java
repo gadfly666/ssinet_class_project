@@ -39,11 +39,11 @@ public class StateP1 extends State {
 		{
 			ExitBuffer exb = sQueue.phyLayer.EXBs[0];//Kiem tra xem EXB co cho trong hay khong?
 			int index = exb.indexOfEmpty();
-			if(index < Constant.QUEUE_SIZE)
+			if(index < Constant.QUEUE_SIZE)//neu EXB con cho trong
 			{
 				Event e = new LeavingSourceQueueEvent();
 				//e.startTime = 
-				sQueue.insertEvents(e);
+				sQueue.insertEvents(e);//chen them su kien moi vao
 			}
 			/*boolean successfullyInserted = exb.insertPacket(this.p);
 			if(successfullyInserted)
