@@ -6,6 +6,7 @@ import java.util.List;
 import common.StdOut;
 import config.Constant;
 import events.Event;
+import network.Switch;
 import network.Topology;
 import network.host.Host;
 
@@ -70,15 +71,30 @@ public class DiscreteEventSimulator extends Simulator {
     
     public void addCurrentEventsFromHost()
     {
-    	ArrayList<Event> allEvents = new ArrayList<Event>();
+    	//ArrayList<Event> allEvents = new ArrayList<Event>();
     	List<Host> allHosts = this.network.getHosts(); 
 		for(Host host : allHosts)
 		{
-			allEvents.addAll(host.physicalLayer.sq.allEvents);
-			allEvents.addAll(host.physicalLayer.EXBs[0].allEvents);//add events of EXB of hosts
+			//allEvents.addAll(host.physicalLayer.sq.allEvents);
+			addCurrentEvetsFromList(host.physicalLayer.sq.allEvents);
+			addCurrentEvetsFromList(host.physicalLayer.EXBs[0].allEvents);//add events of EXB of hosts
+		}
+		List<Switch> allSwitches = this.network.getSwitches();
+		for(Switch aSwitch : allSwitches)
+		{
+			for(int i = 0; i < aSwitch.numPorts; i++)
+			{
+				addCurrentEvetsFromList(aSwitch.physicalLayer.ENBs[i].allEvents);
+				addCurrentEvetsFromList(aSwitch.physicalLayer.EXBs[i].allEvents);//add events of EXB of hosts
+			}
 		}
 		
-		if(allEvents != null)
+		
+    }
+    
+    public void addCurrentEvetsFromList(ArrayList<Event> allEvents)
+    {
+    	if(allEvents != null)
 		{
 			if(allEvents.size() > 0)
 			{
