@@ -40,8 +40,24 @@ public abstract class Buffer extends Element {
 			}
 		}
 		allEvents.add(i, ev);
-		
+		updateSoonestEndTime();
 	}
 	
+	@Override
+	
+	public void updateSoonestEndTime()
+	{
+		if(allEvents == null)
+		{
+			soonestEndTime = Long.MAX_VALUE;
+			return;
+		}
+		if(allEvents.size() == 0)
+		{
+			soonestEndTime = Long.MAX_VALUE;
+			return;
+		}
+		soonestEndTime = allEvents.get(0).endTime;
+	}
 	
 }
