@@ -44,7 +44,9 @@ public class DiscreteEventSimulator extends Simulator {
     	//while(currentTime <= timeLimit)
     	{
     		currentEvents = new ArrayList<Event>();
-    		addCurrentEventsFromHost();
+    		//Loc ra tat ca cac event sap ket thuc o cac thiet bi
+    		addCurrentEventsFromDevices(currentTime);
+    		//
     		for(Event e : currentEvents)
     		{
     			e.execute();
@@ -69,26 +71,37 @@ public class DiscreteEventSimulator extends Simulator {
     	//if()
     }
     
-    public void addCurrentEventsFromHost()
+    public void addCurrentEventsFromDevices(int currentTime)
     {
     	//ArrayList<Event> allEvents = new ArrayList<Event>();
     	List<Host> allHosts = this.network.getHosts(); 
 		for(Host host : allHosts)
 		{
 			//allEvents.addAll(host.physicalLayer.sq.allEvents);
-			addCurrentEvetsFromList(host.physicalLayer.sq.allEvents);
-			addCurrentEvetsFromList(host.physicalLayer.EXBs[0].allEvents);//add events of EXB of hosts
+			if(host.physicalLayer.sq.soonestEndTime == currentTime)
+			{
+				addCurrentEvetsFromList(host.physicalLayer.sq.allEvents);
+			}
+			if(host.physicalLayer.EXBs[0].soonestEndTime == currentTime)
+			{
+				addCurrentEvetsFromList(host.physicalLayer.EXBs[0].allEvents);//add events of EXB of hosts
+			}
 		}
 		List<Switch> allSwitches = this.network.getSwitches();
 		for(Switch aSwitch : allSwitches)
 		{
 			for(int i = 0; i < aSwitch.numPorts; i++)
 			{
-				addCurrentEvetsFromList(aSwitch.physicalLayer.ENBs[i].allEvents);
-				addCurrentEvetsFromList(aSwitch.physicalLayer.EXBs[i].allEvents);//add events of EXB of hosts
+				if(aSwitch.physicalLayer.ENBs[i].soonestEndTime == currentTime)
+				{
+					addCurrentEvetsFromList(aSwitch.physicalLayer.ENBs[i].allEvents);
+				}
+				if(aSwitch.physicalLayer.EXBs[i].soonestEndTime == currentTime)
+				{
+					addCurrentEvetsFromList(aSwitch.physicalLayer.EXBs[i].allEvents);//add events of EXB of hosts
+				}
 			}
 		}
-		
 		
     }
     
