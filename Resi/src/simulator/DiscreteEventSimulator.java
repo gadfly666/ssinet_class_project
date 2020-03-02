@@ -48,6 +48,7 @@ public class DiscreteEventSimulator extends Simulator {
     		{
     			e.execute();
     		}
+    		
     	}
     }
 
@@ -69,20 +70,23 @@ public class DiscreteEventSimulator extends Simulator {
     
     public void addCurrentEventsFromHost()
     {
+    	ArrayList<Event> allEvents = new ArrayList<Event>();
     	List<Host> allHosts = this.network.getHosts(); 
 		for(Host host : allHosts)
 		{
-			ArrayList<Event> allEvents = host.physicalLayer.sq.allEvents;
-			if(allEvents != null)
+			allEvents.addAll(host.physicalLayer.sq.allEvents);
+			allEvents.addAll(host.physicalLayer.EXBs[0].allEvents);//add events of EXB of hosts
+		}
+		
+		if(allEvents != null)
+		{
+			if(allEvents.size() > 0)
 			{
-				if(allEvents.size() > 0)
+				for(Event e: allEvents)
 				{
-					for(Event e: allEvents)
+					if(e.endTime == this.currentTime)
 					{
-						if(e.endTime == this.currentTime)
-						{
-							this.currentEvents.add(e);
-						}
+						this.currentEvents.add(e);
 					}
 				}
 			}
