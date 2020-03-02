@@ -71,7 +71,7 @@ public class DiscreteEventSimulator extends Simulator {
     	//if()
     }
     
-    public void addCurrentEventsFromDevices(int currentTime)
+    public void addCurrentEventsFromDevices(long currentTime)
     {
     	//ArrayList<Event> allEvents = new ArrayList<Event>();
     	List<Host> allHosts = this.network.getHosts(); 
