@@ -51,7 +51,7 @@ public class DiscreteEventSimulator extends Simulator {
     		{
     			e.execute();
     		}
-    		
+    		currentTime = selectNextCurrentTime(currentTime);
     	}
     }
 
@@ -77,31 +77,36 @@ public class DiscreteEventSimulator extends Simulator {
     	List<Host> allHosts = this.network.getHosts(); 
 		for(Host host : allHosts)
 		{
-			//allEvents.addAll(host.physicalLayer.sq.allEvents);
+			//soonestEndTime will be updated later as events are executed
 			if(host.physicalLayer.sq.soonestEndTime == currentTime)
 			{
 				addCurrentEvetsFromList(host.physicalLayer.sq.allEvents);
 			}
+			//soonestEndTime will be updated later as events are executed
 			if(host.physicalLayer.EXBs[0].soonestEndTime == currentTime)
 			{
 				addCurrentEvetsFromList(host.physicalLayer.EXBs[0].allEvents);//add events of EXB of hosts
 			}
 		}
-		List<Switch> allSwitches = this.network.getSwitches();
+		
+		//Temporarily set comment, will be set to normal later
+		/*List<Switch> allSwitches = this.network.getSwitches();
 		for(Switch aSwitch : allSwitches)
 		{
 			for(int i = 0; i < aSwitch.numPorts; i++)
 			{
+				//soonestEndTime will be updated later as events are executed
 				if(aSwitch.physicalLayer.ENBs[i].soonestEndTime == currentTime)
 				{
 					addCurrentEvetsFromList(aSwitch.physicalLayer.ENBs[i].allEvents);
 				}
+				//soonestEndTime will be updated later as events are executed
 				if(aSwitch.physicalLayer.EXBs[i].soonestEndTime == currentTime)
 				{
 					addCurrentEvetsFromList(aSwitch.physicalLayer.EXBs[i].allEvents);//add events of EXB of hosts
 				}
 			}
-		}
+		}*/
 		
     }
     
@@ -121,6 +126,42 @@ public class DiscreteEventSimulator extends Simulator {
 			}
 		}
     }
+
     
+    public long selectNextCurrentTime(long currentTime)
+    {
+    	long result = Long.MAX_VALUE;
+    	List<Host> allHosts = this.network.getHosts(); 
+		for(Host host : allHosts)
+		{
+			if(result > host.physicalLayer.sq.soonestEndTime
+					&& host.physicalLayer.sq.soonestEndTime >= currentTime
+					)
+			{
+				result = host.physicalLayer.sq.soonestEndTime;
+			}
+			
+			if(result > host.physicalLayer.EXBs[0].soonestEndTime
+					&& host.physicalLayer.EXBs[0].soonestEndTime >= currentTime
+					)
+			{
+				result = host.physicalLayer.EXBs[0].soonestEndTime;
+			}
+		}
+		
+		
+		//Temporarily set comment, will be set to normal later
+		/*List<Switch> allSwitches = this.network.getSwitches();
+		for(Switch aSwitch : allSwitches)
+		{
+			if(result > aSwitch.physicalLayer.sq.soonestEndTime
+					&& aSwitch.physicalLayer.sq.soonestEndTime >= currentTime
+					)
+			{
+				result = aSwitch.physicalLayer.sq.soonestEndTime;
+			}
+		}*/
+    	return result;
+    }
     
 }
