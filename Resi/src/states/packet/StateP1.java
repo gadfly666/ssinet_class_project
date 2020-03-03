@@ -4,6 +4,7 @@ import states.State;
 import config.Constant;
 import elements.ExitBuffer;
 import events.Event;
+import events.GenerationEvent;
 import events.LeavingSourceQueueEvent;
 import network.Packet;
 import network.host.SourceQueue;
@@ -12,15 +13,22 @@ public class StateP1 extends State {
 	//•	State P1: the packet is generated
 	public Packet p;
 	
-	public StateP1(SourceQueue e)
+	public StateP1(SourceQueue sq)
 	{
-		this.elem = e;
+		this.elem = sq;
 	}
 	
-	public StateP1(SourceQueue e, Packet p)
+	public StateP1(SourceQueue sq, Packet p)
 	{
-		this.elem = e;
+		this.elem = sq;
 		this.p = p;
+	}
+	
+	public StateP1(SourceQueue sq, Packet p, GenerationEvent ev)
+	{
+		this.elem = sq;
+		this.p = p;
+		this.ancestorEvent = ev;
 	}
 	
 	public void act()
@@ -42,7 +50,9 @@ public class StateP1 extends State {
 			if(index < Constant.QUEUE_SIZE)//neu EXB con cho trong
 			{
 				Event e = new LeavingSourceQueueEvent();
-				//e.startTime = 
+				e.startTime = sQueue.phyLayer.sim.time();
+				e.endTime = e.startTime;
+				e.pid = this.p.id;
 				sQueue.insertEvents(e);//chen them su kien moi vao
 			}
 			/*boolean successfullyInserted = exb.insertPacket(this.p);
