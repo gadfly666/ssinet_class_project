@@ -20,6 +20,7 @@ public class PhysicalLayer {
 		EXBs[0] = new ExitBuffer();
 		EXBs[0].phyLayer = this;
 		sq.phyLayer = this;
+		this.node = host;
 	}
 	
 	/*public void addLocationOfEvents()
