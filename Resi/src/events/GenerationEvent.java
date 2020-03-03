@@ -32,6 +32,7 @@ public class GenerationEvent extends Event {
 			Packet p = sq.dequeue(this.startTime);
 			if(p == null) return;
 			p.setId(numSent);
+			this.pid = p.id;
 			p.state = new StateP1(sq, p);
 			p.state.act();
 			if(sq.state instanceof Sq1)
