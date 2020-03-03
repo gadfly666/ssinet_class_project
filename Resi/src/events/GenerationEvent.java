@@ -25,20 +25,20 @@ public class GenerationEvent extends Event {
 	
 	public void execute()
 	{
-		if(elem instanceof SourceQueue)
+		//if(elem instanceof SourceQueue)
 		{
-			SourceQueue sq = (SourceQueue)elem;
-			sq.allEvents.remove(this);
-			Packet p = sq.dequeue(this.startTime);
+			elem.removeExecutedEvent(this);
+			Packet p = ((SourceQueue)elem).dequeue(this.startTime);
 			if(p == null) return;
 			p.setId(numSent);
 			this.pid = p.id;
-			p.state = new StateP1(sq, p);
+			p.state = new StateP1((SourceQueue)elem, p);
 			p.state.act();
-			if(sq.state instanceof Sq1)
+			
+			if(elem.state instanceof Sq1)//it means that elem is an instance of SourceQueue 
 			{
-				sq.state = new Sq2(sq);
-				sq.state.act();
+				elem.state = new Sq2((SourceQueue)elem);
+				elem.state.act();
 			}
 		}
 	}
