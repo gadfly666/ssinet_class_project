@@ -49,7 +49,7 @@ public class StateP1 extends State {
 			int index = exb.indexOfEmpty();
 			if(index < Constant.QUEUE_SIZE)//neu EXB con cho trong
 			{
-				Event e = new LeavingSourceQueueEvent();
+				Event e = new LeavingSourceQueueEvent(sQueue);
 				e.startTime = sQueue.phyLayer.sim.time();
 				e.endTime = e.startTime;
 				e.pid = this.p.id;
