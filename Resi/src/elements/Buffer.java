@@ -60,4 +60,9 @@ public abstract class Buffer extends Element {
 		soonestEndTime = allEvents.get(0).endTime;
 	}
 	
+	@Override
+	public void removeExecutedEvent(Event ev)
+	{
+		this.allEvents.remove(ev);
+	}
 }
