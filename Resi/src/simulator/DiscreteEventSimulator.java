@@ -41,7 +41,7 @@ public class DiscreteEventSimulator extends Simulator {
     }
 
     public void start () {
-    	//while(currentTime <= timeLimit)
+    	while(currentTime <= timeLimit)
     	{
     		currentEvents = new ArrayList<Event>();
     		//Loc ra tat ca cac event sap ket thuc o cac thiet bi
