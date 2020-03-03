@@ -1,5 +1,6 @@
 package events;
 
+import elements.Element;
 import network.host.SourceQueue;
 
 enum TypeB
@@ -10,11 +11,16 @@ enum TypeB
 public class LeavingSourceQueueEvent extends Event {
 	public TypeB type = TypeB.B;
 	//Event dai dien cho su kien loai (B): goi tin roi khoi Source Queue
+	
+	public LeavingSourceQueueEvent(Element elem)
+	{
+		this.elem = elem;
+	}
+	
+	@Override
 	public void execute()
 	{
-		if(elem instanceof SourceQueue)
-		{
-			
-		}
+		elem.removeExecutedEvent(this);
+		
 	}
 }
