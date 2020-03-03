@@ -1,5 +1,6 @@
 package elements;
 
+import events.Event;
 import states.State;
 
 public abstract class Element {
@@ -13,6 +14,11 @@ public abstract class Element {
 	}
 	
 	public void updateSoonestEndTime()
+	{
+		
+	}
+	
+	public void removeExecutedEvent(Event ev)
 	{
 		
 	}
