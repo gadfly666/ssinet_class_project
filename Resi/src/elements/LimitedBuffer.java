@@ -2,9 +2,11 @@ package elements;
 
 import config.Constant;
 import network.Packet;
+import states.State;
 
 public abstract class LimitedBuffer extends Buffer {
 	public Packet[] allPackets;
+	
 	public int indexOfEmpty()
 	{
 		boolean found = false;
