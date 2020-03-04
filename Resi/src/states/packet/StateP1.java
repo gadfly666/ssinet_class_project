@@ -1,6 +1,8 @@
 package states.packet;
 
 import states.State;
+import states.exb.X00;
+import states.exb.X01;
 import config.Constant;
 import elements.ExitBuffer;
 import events.Event;
@@ -46,8 +48,10 @@ public class StateP1 extends State {
 		if(sQueue.allPackets.get(0) == this.p)
 		{
 			ExitBuffer exb = sQueue.phyLayer.EXBs[0];//Kiem tra xem EXB co cho trong hay khong?
-			int index = exb.indexOfEmpty();
-			if(index < Constant.QUEUE_SIZE)//neu EXB con cho trong
+			//int index = exb.indexOfEmpty();
+			//if(index < Constant.QUEUE_SIZE)
+			//neu EXB con cho trong
+			if(exb.state instanceof X00 || exb.state instanceof X01)
 			{
 				Event e = new LeavingSourceQueueEvent(sQueue, this.p);
 				e.startTime = sQueue.phyLayer.sim.time();
