@@ -5,6 +5,11 @@ import elements.Element;
 import elements.ExitBuffer;
 import network.Packet;
 import network.host.SourceQueue;
+import states.exb.X00;
+import states.exb.X01;
+import states.exb.X10;
+import states.exb.X11;
+import states.packet.StateP2;
 import states.sourcequeue.Sq2;
 
 enum TypeB
@@ -28,13 +33,24 @@ public class LeavingSourceQueueEvent extends Event {
 		elem.removeExecutedEvent(this);
 		SourceQueue sQueue = (SourceQueue)elem;
 		ExitBuffer exb = sQueue.phyLayer.EXBs[0];//Kiem tra xem EXB co cho trong hay khong?
-		int index = exb.indexOfEmpty();
-		if(index < Constant.QUEUE_SIZE
+		//int index = exb.indexOfEmpty();
+		//if(index < Constant.QUEUE_SIZE
+		if(((exb.state instanceof X00 ) || (exb.state instanceof X01))
 				&& (sQueue.state instanceof Sq2)
 				)//neu EXB con cho trong
 		{
 			Packet p = sQueue.allPackets.remove(0);
 			exb.insertPacket(p);
+			p.state = new StateP2();
+			p.state.act();
+			
+			int index = exb.indexOfEmpty();
+			if(index == Constant.QUEUE_SIZE)
+			{
+				if(exb.state instanceof X00) { exb.state = new X10(); }
+				if(exb.state instanceof X01) { exb.state = new X11(); }
+			}
+			exb.state.act();
 			//To be continued...
 			//Event e = new LeavingSourceQueueEvent(sQueue);
 			//e.startTime = sQueue.phyLayer.sim.time();
