@@ -13,7 +13,7 @@ public class SourceQueue  extends Buffer{
     private int sourceId;
     private int destinationId;
     private long front;
-    public State state = new Sq1(this);
+    
     
     public ArrayList<Packet> allPackets = new ArrayList<Packet>();
        
@@ -22,12 +22,14 @@ public class SourceQueue  extends Buffer{
     	this.sourceId = sourceId;
     	this.destinationId = sourceId;
     	this.front = -1;
+    	state = new Sq1(this);
     }
 
     public SourceQueue(int sourceId, int destinationId){
         this.sourceId = sourceId;
         this.destinationId = destinationId;
         this.front = -1;
+        state = new Sq1(this);
     }
     
     public void setDestionationID(int destionationID)
