@@ -42,7 +42,7 @@ public class LeavingSourceQueueEvent extends Event {
 			Packet p = sQueue.allPackets.remove(0);
 			exb.insertPacket(p);
 			p.state = new StateP2();
-			p.state.act();
+			p.state.act(this);
 			
 			int index = exb.indexOfEmpty();
 			if(index == Constant.QUEUE_SIZE)
@@ -50,7 +50,7 @@ public class LeavingSourceQueueEvent extends Event {
 				if(exb.state instanceof X00) { exb.state = new X10(); }
 				if(exb.state instanceof X01) { exb.state = new X11(); }
 			}
-			exb.state.act();
+			exb.state.act(this);
 			//To be continued...
 			//Event e = new LeavingSourceQueueEvent(sQueue);
 			//e.startTime = sQueue.phyLayer.sim.time();
