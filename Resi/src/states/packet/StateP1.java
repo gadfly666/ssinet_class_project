@@ -33,7 +33,8 @@ public class StateP1 extends State {
 		this.ancestorEvent = ev;
 	}
 	
-	public void act()
+	@Override
+	public void act(GenerationEvent ev)
 	{
 		SourceQueue sQueue = (SourceQueue)elem;
 		if(sQueue == null || this.p == null)
