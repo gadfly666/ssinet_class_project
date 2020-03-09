@@ -33,12 +33,12 @@ public class GenerationEvent extends Event {
 			p.setId(numSent);
 			this.pid = p.id;
 			p.state = new StateP1((SourceQueue)elem, p);
-			p.state.act();
+			p.state.act(this);
 			
 			if(elem.state instanceof Sq1)//it means that elem is an instance of SourceQueue 
 			{
 				elem.state = new Sq2((SourceQueue)elem);
-				elem.state.act();
+				elem.state.act(this);
 			}
 		}
 	}
