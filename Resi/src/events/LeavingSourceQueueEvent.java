@@ -50,6 +50,7 @@ public class LeavingSourceQueueEvent extends Event {
 				if(exb.state instanceof X00) { exb.state = new X10(); }
 				if(exb.state instanceof X01) { exb.state = new X11(); }
 			}
+			exb.state.elem = exb;
 			exb.state.act(this);
 			//To be continued...
 			//Event e = new LeavingSourceQueueEvent(sQueue);
