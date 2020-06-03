@@ -54,11 +54,11 @@ public class StateP1 extends State {
 			//neu EXB con cho trong
 			if(exb.state instanceof X00 || exb.state instanceof X01)
 			{
-				Event e = new LeavingSourceQueueEvent(sQueue, this.p);
-				e.startTime = sQueue.phyLayer.sim.time();
-				e.endTime = e.startTime;
-				e.pid = this.p.id;
-				sQueue.insertEvents(e);//chen them su kien moi vao
+			//	Event e = new LeavingSourceQueueEvent(sQueue, this.p);
+			//	e.startTime = sQueue.phyLayer.sim.time();
+			//	e.endTime = e.startTime;
+			//	e.pid = this.p.id;
+			//	sQueue.insertEvents(e);//chen them su kien moi vao
 			}
 			/*boolean successfullyInserted = exb.insertPacket(this.p);
 			if(successfullyInserted)

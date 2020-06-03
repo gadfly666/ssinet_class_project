@@ -21,21 +21,20 @@ public abstract class Buffer extends Element {
 		int i;
 		if(allEvents == null)
 		{
-			allEvents = new ArrayList<Event>();
+			allEvents = new ArrayList<>();
 			allEvents.add(ev);
 			return;
 		}
 		if(allEvents.size() == 0)
 		{
 			allEvents.add(ev);
+			updateSoonestEndTime();
 			return;
 		}
-		boolean found = false;
-		for(i = 0; i < allEvents.size() && !found; i++ )
+		for(i = 0; i < allEvents.size(); i++ )
 		{
 			if(allEvents.get(i).endTime > endTime)
 			{
-				found = true;
 				break;
 			}
 		}
@@ -58,6 +57,7 @@ public abstract class Buffer extends Element {
 			return;
 		}
 		soonestEndTime = allEvents.get(0).endTime;
+		System.out.println("Eveent " + allEvents.get(0).getClass() + " SoonestTime: " + soonestEndTime);
 	}
 	
 	@Override

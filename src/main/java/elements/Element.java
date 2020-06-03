@@ -6,7 +6,7 @@ import states.State;
 public abstract class Element {
 	public int id;
 	public State state;
-	public long soonestEndTime = 0;
+	public long soonestEndTime = Long.MAX_VALUE;
 	
 	public void getNextState()
 	{
@@ -22,4 +22,5 @@ public abstract class Element {
 	{
 		
 	}
+
 }

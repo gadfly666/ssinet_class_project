@@ -4,23 +4,21 @@ import config.Constant;
 import network.Packet;
 import states.State;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 public abstract class LimitedBuffer extends Buffer {
 	public Packet[] allPackets;
 	
-	public int indexOfEmpty()
+	public int indexOfEmptySlot()
 	{
-		boolean found = false;
-		int i;
-		for(i = 0; i < Constant.QUEUE_SIZE && !found; i++)
-		{
-			if(allPackets[i] == null)
-			{
-				found = true;
-			}
-		}
-		if(found) return i;
-		return (Constant.QUEUE_SIZE + 1);
+		//index of emtpty slot == number of used slot cause allPackets is an array
+		return Arrays.stream(allPackets)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList()).size();
 	}
+	//init packet size
 	public LimitedBuffer()
 	{
 		allPackets = new Packet[Constant.QUEUE_SIZE];
@@ -35,15 +33,12 @@ public abstract class LimitedBuffer extends Buffer {
 	 */
 	public boolean insertPacket(Packet p)
 	{
-		boolean found = false;
-		for(int i = 0; i < Constant.QUEUE_SIZE && !found; i++)
-		{
-			if(allPackets[i] == null)
-			{
-				allPackets[i] = p;
-				found = true;
-			}
+		boolean inserted = false;
+		int emptySlot = indexOfEmptySlot();
+		if(emptySlot < Constant.QUEUE_SIZE){
+			allPackets[emptySlot] = p;
+			inserted = true;
 		}
-		return found;
+		return inserted;
 	}
 }

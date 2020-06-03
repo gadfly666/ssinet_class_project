@@ -47,9 +47,7 @@ public class Topology {
         }
 
         for (int sid : graph.switches()) {
-            Switch sw = new Switch(sid
-            		//, routingAlgorithm
-            		);
+            Switch sw = new Switch(sid, routingAlgorithm);
             switches.add(sw);
             switchById.put(sid, sw);
 
@@ -63,17 +61,25 @@ public class Topology {
         Coordination C = new Coordination(graph);
         for (Switch sw : switches) {
             int swid = sw.id;
+
             for (int nsid : graph.adj(swid)) {
                 if (graph.isSwitchVertex(nsid)) {
                     Switch other = switchById.get(nsid);
                     // => ThanhNT set comment to THE following line
-                    //if (!other.ports.containsKey(swid)) 
+                    //if (!other.ports.containsKey(swid))
+                    if(!sw.connectedNodes.contains(other))
                     {
                         // create new link
                         double x =  C.distanceBetween(sw.id, other.id);
                         System.out.println("Chieu dai leng = " + x + " from: " + sw.id + " to: " + other.id);
                         //double x = 5;
                         Link link = new Link(sw, other, x);
+                        other.connectedNodes.add(sw);
+                        sw.connectedNodes.add(other);
+                        other.physicalLayer.links.add(link);
+                        sw.physicalLayer.links.add(link);
+                        sw.numPorts ++;
+                        other.numPorts ++;
                         // => ThanhNT set comment to 2 following lines
                         //other.ports.put(swid, link.getPort(other));
                         //sw.ports.put(nsid, link.getPort(sw));
@@ -95,6 +101,10 @@ public class Topology {
 
             // create new link
             Link link = new Link(host, csw, Constant.HOST_TO_SWITCH_LENGTH);
+
+            host.link(link);
+            csw.physicalLayer.links.add(link);
+            csw.numPorts ++;
 
             //// add link to both => ThanhNT set comment to 2 following lines
             //host.portToSwitch = link.getPort(host);
@@ -138,7 +148,7 @@ public class Topology {
         }
 
         for (Switch sw: switches) {
-            
+            sw.physicalLayer.sim = sim;
         }
         
         sim.network = this;

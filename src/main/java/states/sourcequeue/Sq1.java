@@ -25,10 +25,10 @@ public class Sq1 extends State {
 		SourceQueue sQueue = (SourceQueue)elem;
 		if(notYetAddGenerationEvent(sQueue))//Kiem tra xem Source Queue da co event tao goi tin moi chua?
 		{
-			Event e = new GenerationEvent(elem);
-			e.startTime = (long)sQueue.getNextPacketTime();
-			e.endTime = e.startTime;
-			sQueue.insertEvents(e);//ma nguon cu dung pthuc add la khong dung
+//			Event e = new GenerationEvent(elem);
+//			e.startTime = (long)sQueue.getNextPacketTime();
+//			e.endTime = e.startTime;
+//			sQueue.insertEvents(e);//ma nguon cu dung pthuc add la khong dung
 		}
 	}
 	
