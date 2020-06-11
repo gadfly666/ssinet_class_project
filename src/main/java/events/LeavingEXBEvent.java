@@ -9,6 +9,9 @@ import network.host.Host;
 import network.host.SourceQueue;
 import network.layers.PhysicalLayer;
 import states.packet.StateP3;
+import states.unidirectionalway.W0;
+
+import java.util.Objects;
 
 public class LeavingEXBEvent extends Event {
     //Event dai dien cho su kien loai (C): goi tin roi khoi EXB
@@ -26,19 +29,18 @@ public class LeavingEXBEvent extends Event {
         exb.removeExecutedEvent(this);//go bo su kien nay ra khoi danh sach cac su kien
 
         Packet p = exb.allPackets[0];
+        Node currentNode = link.ways.get(exb.nodeId).from;
+        Way way = link.ways.get(currentNode.id);
 
-        link.transferPacket(exb.nodeId, p);
-
+        if(Objects.nonNull(p)){
+            way.packet = p;
+            way.getNextState();
+            way.state.act();
+        }
         //vong lap for thuc hien viec dich chuyen cac goi tin len truoc
         for (int i = 0; i < Constant.QUEUE_SIZE - 1; i++) {
             exb.allPackets[i] = exb.allPackets[i + 1];
         }
-        //slot cuoi cung trong bo dem cua EXB phai la null (khong chua goi tin nao)
         exb.allPackets[Constant.QUEUE_SIZE - 1] = null;
-
-//        Node from = link.ways.get(exb.nodeId).from;
-//        if(from instanceof Host) {
-//            ((Host)from).generatePacket(p.getDestination());
-//        }
     }
 }

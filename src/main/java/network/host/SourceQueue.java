@@ -3,61 +3,71 @@ package network.host;
 import config.Constant;
 import network.Packet;
 import elements.Buffer;
-import elements.Element;
-import java.util.*;
-import events.Event;
-import states.sourcequeue.*;
 import states.State;
 
-public class SourceQueue  extends Buffer{
+import java.util.*;
+
+import states.sourcequeue.*;
+
+public class SourceQueue extends Buffer {
     private int sourceId;
     private int destinationId;
-    private long front;
-    
-    
+    private long generatedPacketCount;
+
+
     public ArrayList<Packet> allPackets = new ArrayList<Packet>();
-       
-    public SourceQueue(int sourceId)
-    {
-    	this.sourceId = sourceId;
-    	this.destinationId = sourceId;
-    	this.front = -1;
-    	state = new Sq1(this);
+
+    public SourceQueue(int sourceId) {
+        this.sourceId = sourceId;
+        this.destinationId = sourceId;
+        this.generatedPacketCount = -1;
+        state = new Sq1(this.phyLayer, this);
     }
 
-    public SourceQueue(int sourceId, int destinationId){
+    public SourceQueue(int sourceId, int destinationId) {
         this.sourceId = sourceId;
         this.destinationId = destinationId;
-        this.front = -1;
-        state = new Sq1(this);
-    }
-    
-    public void setDestionationID(int destionationID)
-    {
-    	this.destinationId = destionationID;
-    }
-    public int getDestionationID()
-    {
-    	return this.destinationId;
+        this.generatedPacketCount = -1;
+        state = new Sq1(this.phyLayer, this);
     }
 
-    public Packet dequeue(long currentTime) {
-        if (this.isEmpty(currentTime)) return null;
+    public void setDestionationID(int destionationID) {
+        this.destinationId = destionationID;
+    }
 
-        front++;
-        double timeSent = front * Constant.HOST_DELAY;
-        Packet p = new Packet(-1, sourceId, destinationId, timeSent);
+    public int getDestionationID() {
+        return this.destinationId;
+    }
+
+    public Packet generateNewPacket(long currentTime) {
+        if (this.isDelayed(currentTime)) return null;
+
+        generatedPacketCount++;
+        double timeSent = generatedPacketCount * Constant.HOST_DELAY;
+        Packet p = new Packet(0, sourceId, destinationId, timeSent);
         allPackets.add(p);
         return p;
     }
 
-    public boolean isEmpty(long currentTime){
-        long r = currentTime/Constant.HOST_DELAY;
-        return r<=front;
+    public boolean isDelayed(long currentTime) {
+        long r = currentTime / Constant.HOST_DELAY;
+        return r <= generatedPacketCount;
     }
 
-    public double getNextPacketTime(){
-        return (double)(front+1)*Constant.HOST_DELAY;
+    public double getNextPacketTime() {
+        return (double) (generatedPacketCount + 1) * Constant.HOST_DELAY;
     }
-    
+
+    public int getSourceId() {
+        return this.sourceId;
+    }
+
+    public void getNextState() {
+        if (allPackets.isEmpty()) {
+            state = new Sq1(this.phyLayer, this);
+        } else {
+            state = new Sq2(this.phyLayer, this);
+        }
+    }
+
 }

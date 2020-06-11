@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import common.StdOut;
 import config.Constant;
 import events.Event;
+import network.Link;
 import network.Switch;
 import network.Topology;
 import network.host.Host;
@@ -82,12 +83,21 @@ public class DiscreteEventSimulator extends Simulator {
             if (host.physicalLayer.EXBs[0].soonestEndTime == currentTime) {
                 addCurrentEvetsFromList(host.physicalLayer.EXBs[0].allEvents);//add events of EXB of hosts
             }
+
+            if (host.physicalLayer.links.get(host.id).ways.get(host.id).soonestEndTime == currentTime) {
+                addCurrentEvetsFromList(host.physicalLayer.links.get(host.id).ways.get(host.id).allEvents);//add events of EXB of hosts
+            }
         }
 
         //Temporarily set comment, will be set to normal later
         List<Switch> allSwitches = this.network.getSwitches();
         for (Switch aSwitch : allSwitches) {
-            for (int i = 0; i < aSwitch.numPorts; i++) {
+            for (int i = 0; i < aSwitch.physicalLayer.EXBs.length; i++) {
+                for(Link link : aSwitch.physicalLayer.links.values()) {
+                    if (link.ways.get(aSwitch.id).soonestEndTime == currentTime ) {
+                        addCurrentEvetsFromList(link.ways.get(aSwitch.id).allEvents);
+                    }
+                }
                 //soonestEndTime will be updated later as events are executed
                 if (aSwitch.physicalLayer.ENBs[i].soonestEndTime == currentTime) {
                     addCurrentEvetsFromList(aSwitch.physicalLayer.ENBs[i].allEvents);
@@ -96,6 +106,7 @@ public class DiscreteEventSimulator extends Simulator {
                 if (aSwitch.physicalLayer.EXBs[i].soonestEndTime == currentTime) {
                     addCurrentEvetsFromList(aSwitch.physicalLayer.EXBs[i].allEvents);//add events of EXB of hosts
                 }
+
             }
         }
 
@@ -110,58 +121,42 @@ public class DiscreteEventSimulator extends Simulator {
 
 
     public long selectNextCurrentTime(long currentTime) {
-        long result = selectNextHostCurrentTime(currentTime);
-
-        long swResult = selectNextSwitchCurrentTime(currentTime);
-        return (swResult < result) ? swResult : result;
-    }
-
-    private long selectNextSwitchCurrentTime(long currentTime) {
-        //Temporarily set comment, will be set to normal later
-        long result = Long.MAX_VALUE;
-        List<Switch> allSwitches = this.network.getSwitches();
-        for (Switch aSwitch : allSwitches) {
-            for (int i = 0; i < aSwitch.numPorts; i++) {
-                //soonestEndTime will be updated later as events are executed
-                if (aSwitch.physicalLayer.EXBs[i].soonestEndTime > 0) {
-                    if (aSwitch.physicalLayer.EXBs[i].soonestEndTime >= currentTime
-                            && aSwitch.physicalLayer.EXBs[i].soonestEndTime < result) {
-                        result = aSwitch.physicalLayer.EXBs[i].soonestEndTime;
-                    }
-                }
-
-                //soonestEndTime will be updated later as events are executed
-                if (aSwitch.physicalLayer.ENBs[i].soonestEndTime > 0) {
-                    if (aSwitch.physicalLayer.ENBs[i].soonestEndTime >= currentTime
-                            && aSwitch.physicalLayer.ENBs[i].soonestEndTime < result) {
-                        result = aSwitch.physicalLayer.ENBs[i].soonestEndTime;
-                    }
-                }
-
-            }
-//            if (result > aSwitch.physicalLayer.sq.soonestEndTime
-//                    && aSwitch.physicalLayer.sq.soonestEndTime >= currentTime
-//            ) {
-//                result = aSwitch.physicalLayer.sq.soonestEndTime;
-//            }
-        }
-        return result;
-    }
-
-    private long selectNextHostCurrentTime(long currentTime) {
         long result = Long.MAX_VALUE;
         List<Host> allHosts = this.network.getHosts();
         for (Host host : allHosts) {
-            if (result > host.physicalLayer.sq.soonestEndTime
-                    && host.physicalLayer.sq.soonestEndTime >= currentTime
-            ) {
+            if (host.physicalLayer.sq.soonestEndTime >= currentTime && host.physicalLayer.sq.soonestEndTime < result) {
                 result = host.physicalLayer.sq.soonestEndTime;
             }
 
-            if (result > host.physicalLayer.EXBs[0].soonestEndTime
-                    && host.physicalLayer.EXBs[0].soonestEndTime >= currentTime
-            ) {
+            if (host.physicalLayer.EXBs[0].soonestEndTime >= currentTime && host.physicalLayer.EXBs[0].soonestEndTime < result) {
                 result = host.physicalLayer.EXBs[0].soonestEndTime;
+            }
+
+            if (host.physicalLayer.links.get(host.id).ways.get(host.id).soonestEndTime >= currentTime
+                    && host.physicalLayer.links.get(host.id).ways.get(host.id).soonestEndTime < result){
+                result = host.physicalLayer.links.get(host.id).ways.get(host.id).soonestEndTime;
+            }
+        }
+
+        List<Switch> allSwitches = this.network.getSwitches();
+        for (Switch aSwitch : allSwitches) {
+            for (int i = 0; i < aSwitch.physicalLayer.EXBs.length; i++) {
+                //soonestEndTime will be updated later as events are executed
+                if (aSwitch.physicalLayer.EXBs[i].soonestEndTime >= currentTime && aSwitch.physicalLayer.EXBs[i].soonestEndTime < result) {
+                    result = aSwitch.physicalLayer.EXBs[i].soonestEndTime;
+                }
+
+                //soonestEndTime will be updated later as events are executed
+                if (aSwitch.physicalLayer.ENBs[i].soonestEndTime >= currentTime && aSwitch.physicalLayer.ENBs[i].soonestEndTime < result) {
+                    result = aSwitch.physicalLayer.ENBs[i].soonestEndTime;
+                }
+
+                for(Link link : aSwitch.physicalLayer.links.values()) {
+
+                    if (link.ways.get(aSwitch.id).soonestEndTime >= currentTime && link.ways.get(aSwitch.id).soonestEndTime < result) {
+                        result = link.ways.get(aSwitch.id).soonestEndTime;
+                    }
+                }
             }
         }
         return result;

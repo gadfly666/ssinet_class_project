@@ -1,9 +1,10 @@
 package events;
 
-import elements.*;
+import elements.Element;
+import network.Packet;
 
 public abstract class Event {
-	public long pid; //packet ID
+	public Packet packet; //packet ID
 	public long startTime;
 	public long endTime;
 	

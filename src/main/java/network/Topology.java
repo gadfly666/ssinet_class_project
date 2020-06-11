@@ -67,23 +67,15 @@ public class Topology {
                     Switch other = switchById.get(nsid);
                     // => ThanhNT set comment to THE following line
                     //if (!other.ports.containsKey(swid))
-                    if(!sw.connectedNodes.contains(other))
+                    if(!other.physicalLayer.links.containsKey(sw.id))
                     {
                         // create new link
                         double x =  C.distanceBetween(sw.id, other.id);
                         System.out.println("Chieu dai leng = " + x + " from: " + sw.id + " to: " + other.id);
                         //double x = 5;
                         Link link = new Link(sw, other, x);
-                        other.connectedNodes.add(sw);
-                        sw.connectedNodes.add(other);
-                        other.physicalLayer.links.add(link);
-                        sw.physicalLayer.links.add(link);
-                        sw.numPorts ++;
-                        other.numPorts ++;
-                        // => ThanhNT set comment to 2 following lines
-                        //other.ports.put(swid, link.getPort(other));
-                        //sw.ports.put(nsid, link.getPort(sw));
-                        //ThanhNT 14/10 add new statements to insert coord of switch
+                        other.physicalLayer.links.put(sw.id, link);
+                        sw.physicalLayer.links.put(other.id, link);
                         cordOfNodes.put(sw.id, C.getCoordOfSwitch(sw.id));
                         cordOfNodes.put(other.id, C.getCoordOfSwitch(other.id));
                         //Endof ThanhNT 14/10 add new statements to insert coord of switch
@@ -103,7 +95,7 @@ public class Topology {
             Link link = new Link(host, csw, Constant.HOST_TO_SWITCH_LENGTH);
 
             host.link(link);
-            csw.physicalLayer.links.add(link);
+            csw.physicalLayer.links.put(host.id, link);
             csw.numPorts ++;
 
             //// add link to both => ThanhNT set comment to 2 following lines

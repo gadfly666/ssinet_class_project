@@ -2,6 +2,7 @@ package events;
 
 import elements.EntranceBuffer;
 import network.Packet;
+import states.packet.StateP4;
 
 enum TypeD {
     D, D1, D2
@@ -21,11 +22,9 @@ public class ReachingENBEvent extends Event {
 
     @Override
     public void execute() {
-        entranceBuffer.removeExecutedEvent(this);
+        entranceBuffer.way.removeExecutedEvent(this);
         System.out.println("REACH ENB" + p.id);
-
-        if (entranceBuffer.insertPacket(p)) {
-            entranceBuffer.aSwitch.networkLayer.route(entranceBuffer);
-        }
+        p.state = new StateP4(entranceBuffer);
+        p.state.act();
     }
 }

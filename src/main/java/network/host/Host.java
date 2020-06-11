@@ -1,10 +1,13 @@
 package network.host;
 
+import config.Constant;
 import events.Event;
 import events.GenerationEvent;
 import network.Link;
 import network.Node;
+import network.Packet;
 import network.layers.PhysicalLayer;
+import simulator.DiscreteEventSimulator;
 
 
 /**
@@ -18,7 +21,7 @@ public class Host extends Node {
     }
 
     public Host link(Link link) {
-        this.physicalLayer.links.add(link);
+        this.physicalLayer.links.put(this.id, link);
         return this;
     }
 
@@ -38,7 +41,20 @@ public class Host extends Node {
         this.physicalLayer.sq.insertEvents(ev);
     }
 
-    public void receive() {
-
+    public void receive(Packet p) {
+        double currentTime = ((DiscreteEventSimulator)this.physicalLayer.sim).getTime();
+        ((DiscreteEventSimulator)this.physicalLayer.sim).numReceived++;
+////        if(this.receivedPacketInNode == 0) {
+//////            this.firstTx = packet.getStartTime();
+////            this.firstTx = currentTime;
+////            //System.out.println("Thoi gian goi tin dau tien den voi host " + self.id + " la: " + this.firstTx);
+////        }
+////        this.receivedPacketInNode ++;
+////        this.lastRx = currentTime;
+////        this.physicalLayer.simulator.receivedPacketPerUnit[(int)(currentTime / Constant.EXPERIMENT_INTERVAL + 1)]++;
+        p.setEndTime(currentTime);
+//
+        ((DiscreteEventSimulator)this.physicalLayer.sim).totalPacketTime += p.timeTravel();
+       //todo xem nHop la gi
     }
 }

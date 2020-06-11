@@ -12,6 +12,7 @@ import elements.Way;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,8 +29,8 @@ public class Link extends Device {
         super(-1);
         ways = new HashMap<>();
 
-        ways.put(v.id, new Way(u, v));
-        ways.put(u.id, new Way(v, u));
+        ways.put(v.id, new Way(u, v, this));
+        ways.put(u.id, new Way(v, u, this));
 
         this.bandwidth = Constant.LINK_BANDWIDTH;
     }
@@ -40,20 +41,7 @@ public class Link extends Device {
         System.out.println("Link from: " + u.id + " to: " + v.id + " Length = " + length);
     }
 
-    public void transferPacket(int to, Packet p) {
-        Way way = ways.get(to);
-        System.out.println("Transfer");
-        if (way.to instanceof Switch) {
-            way.to.physicalLayer.findByNodeId(way.from.id).ifPresent(
-                    (entranceBuffer) -> {
-                        Event e = new ReachingENBEvent(p, entranceBuffer);
-                        e.startTime = way.to.physicalLayer.sim.time();
-                        e.endTime = way.to.physicalLayer.sim.time() + propagationLatency() + serialLatency(p.getSize());
-                        entranceBuffer.insertEvents(e);
-                    }
-            );
-        }
-    }
+
 
     public long serialLatency(int packetSize) {
         if (packetSize != 100000 && this.bandwidth != 1e9)

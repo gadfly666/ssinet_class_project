@@ -22,6 +22,7 @@ public class NetworkLayer {
     }
 
     public void controlFlow(ExitBuffer exitBuffer) {
+    	System.out.println("Control flow");
 		long time = this.node.physicalLayer.sim.time();
         EntranceBuffer enb = exitBuffer.requestEnbQueue.dequeue();
         if(enb != null){
@@ -32,9 +33,11 @@ public class NetworkLayer {
     }
 
     public void route(EntranceBuffer entranceBuffer) {
+    	System.out.println("Routing ...");
 		Optional.ofNullable(entranceBuffer.allPackets[0])
 				.ifPresent(
 						p -> {
+							System.out.println(p);
 							int nextNodeId = this.node.dataLinkLayer.getNextNode(p);
 							this.node.physicalLayer.findExbByNodeId(nextNodeId).ifPresent(
 									exitBuffer -> {

@@ -9,7 +9,6 @@ public class X01 extends State {
 	//�	State X01: EXB is not full and able to transfer packet.
 
 
-	@Override
 	public void act(LeavingSourceQueueEvent ev)
 	{
 		ExitBuffer exb = (ExitBuffer)elem;

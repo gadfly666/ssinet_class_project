@@ -45,15 +45,12 @@ public class LeavingSourceQueueEvent extends Event {
 		ExitBuffer exb = physicalLayer.EXBs[0];//Kiem tra xem EXB co cho trong hay khong?
 		//int index = exb.indexOfEmpty();
 		//if(index < Constant.QUEUE_SIZE
-
-		if(!exb.insertPacket(p)){
-			//update Event endtime then return
+		if(exb.insertPacket(p)){
+			p.state = new StateP2(physicalLayer, exb);
+			p.state.act();
+			sQueue.allPackets.remove(p);
+			sQueue.getNextState();
+			sQueue.state.act();
 		}
-
-
-		Event leavingEXBEvent = new LeavingEXBEvent(physicalLayer.links.get(0), exb);
-		leavingEXBEvent.startTime = physicalLayer.sim.time();
-		leavingEXBEvent.endTime = physicalLayer.sim.time();
-		exb.insertEvents(leavingEXBEvent);
 	}
 }

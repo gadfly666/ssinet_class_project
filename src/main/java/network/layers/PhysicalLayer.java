@@ -16,7 +16,7 @@ public class PhysicalLayer {
     public EntranceBuffer[] ENBs;
     public SourceQueue sq;
     public Simulator sim;
-    public List<Link> links;
+    public Map<Integer, Link> links;
 //	public Device node;
 
     public PhysicalLayer(Host host) {
@@ -24,7 +24,7 @@ public class PhysicalLayer {
         EXBs = new ExitBuffer[1];
         sq = new SourceQueue(host.id);
         EXBs[0] = new ExitBuffer();
-        links = new ArrayList<>();
+        links = new HashMap<>();
 //		EXBs[0].phyLayer = this;
 		sq.phyLayer = this;
 //		this.node = host;
@@ -35,13 +35,13 @@ public class PhysicalLayer {
         EXBs = new ExitBuffer[4];
         Arrays.fill(ENBs, new EntranceBuffer(sw));
         Arrays.fill(EXBs, new ExitBuffer());
-        links = new ArrayList<>();
+        links = new HashMap<>();
     }
 
-    public Optional<Link> getByNextNodeId (int nodeId) {
-        return links.stream().filter(link -> !Objects.isNull(link.ways.get(nodeId)))
-                .findFirst();
-    }
+//    public Optional<Link> getByNextNodeId (int nodeId) {
+//        return links.stream().filter(link -> !Objects.isNull(link.ways.get(nodeId)))
+//                .findFirst();
+//    }
 
     public Optional<EntranceBuffer> notConnectedEntranceBuffer() {
         return Arrays.stream(ENBs).filter(e -> !Objects.isNull(e))

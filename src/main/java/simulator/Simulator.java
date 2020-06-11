@@ -42,6 +42,10 @@ public abstract class Simulator {
     public void start () {
     
     }
+
+    public void resetTime(){
+        currentTime ++;
+    }
     
     
     

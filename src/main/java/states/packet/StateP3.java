@@ -1,11 +1,7 @@
 package states.packet;
 
 import elements.Element;
-import elements.ExitBuffer;
-import events.LeavingEXBEvent;
-import network.Link;
-import network.Node;
-import network.Packet;
+import elements.Way;
 import states.State;
 
 public class StateP3 extends State {
@@ -16,13 +12,8 @@ public class StateP3 extends State {
         this.element = element;
     }
 
-    @Override
-    public void act(LeavingEXBEvent ev) {
-        //get connected Link
-        Link link = ((ExitBuffer)element).link;
-        Packet p = ((ExitBuffer)element).allPackets[0];
-
-//        Node nextNode = (Node)link.connectedNode.get(p.getDestination());
-//        nextNode.physicalLayer.
+    public void act() {
+        Way way = (Way) element;
+        way.transferPacket();
     }
 }

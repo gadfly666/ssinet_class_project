@@ -36,7 +36,7 @@ public class ThroughputExperiment {
             network.getHostById(source).generatePacket(destination);
         }
         simulator.start();
-        
+        System.out.println("num receive: " + simulator.numReceived + " num sent: " + simulator.numSent);
         return null;
     }
     
