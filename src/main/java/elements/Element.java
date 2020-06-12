@@ -75,7 +75,7 @@ public abstract class Element {
 //		allEvents.remove(allEvents.size() -1);
 		if (allEvents.isEmpty())
 			this.soonestEndTime = Long.MAX_VALUE;
-//		else this.soonestEndTime = allEvents.get(0).endTime;
+		updateSoonestEndTime();
 	}
 	
 	public void getNextState()

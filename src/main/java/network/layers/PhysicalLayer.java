@@ -55,11 +55,15 @@ public class PhysicalLayer {
     }
 
     public Optional<EntranceBuffer> findByNodeId(long nodeId){
-        return Arrays.stream(ENBs).filter(e -> e.nodeId != nodeId).findFirst();
+        return Arrays.stream(ENBs)
+                .filter(e -> !Objects.isNull(e))
+                .filter(e -> e.nodeId != nodeId).findFirst();
     }
 
     public Optional<ExitBuffer> findExbByNodeId(long nodeId) {
-        return Arrays.stream(EXBs).filter(e -> e.nodeId != nodeId).findFirst();
+        return Arrays.stream(EXBs)
+                .filter(e -> !Objects.isNull(e))
+                .filter(e -> e.nodeId != nodeId).findFirst();
     }
 
 	/*public void addLocationOfEvents()

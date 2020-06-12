@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import common.StdOut;
 import config.Constant;
+import elements.Way;
 import events.Event;
 import network.Link;
 import network.Switch;
@@ -50,6 +51,7 @@ public class DiscreteEventSimulator extends Simulator {
             //
             for (Event e : currentEvents) {
                 e.execute();
+                System.out.println("Executed: " + e.toString());
             }
             currentTime = selectNextCurrentTime(currentTime);
             System.out.println("current time: " + currentTime);
@@ -84,8 +86,9 @@ public class DiscreteEventSimulator extends Simulator {
                 addCurrentEvetsFromList(host.physicalLayer.EXBs[0].allEvents);//add events of EXB of hosts
             }
 
-            if (host.physicalLayer.links.get(host.id).ways.get(host.id).soonestEndTime == currentTime) {
-                addCurrentEvetsFromList(host.physicalLayer.links.get(host.id).ways.get(host.id).allEvents);//add events of EXB of hosts
+            Link link = host.physicalLayer.links.get(host.id);
+            if (link.ways.get(link.ways.get(host.id).from.id).soonestEndTime == currentTime) {
+                addCurrentEvetsFromList(link.ways.get(link.ways.get(host.id).from.id).allEvents);//add events of EXB of hosts
             }
         }
 
@@ -94,8 +97,9 @@ public class DiscreteEventSimulator extends Simulator {
         for (Switch aSwitch : allSwitches) {
             for (int i = 0; i < aSwitch.physicalLayer.EXBs.length; i++) {
                 for(Link link : aSwitch.physicalLayer.links.values()) {
-                    if (link.ways.get(aSwitch.id).soonestEndTime == currentTime ) {
-                        addCurrentEvetsFromList(link.ways.get(aSwitch.id).allEvents);
+                    Way way = link.ways.get(link.ways.get(aSwitch.id).from.id);
+                    if (way.soonestEndTime == currentTime ) {
+                        addCurrentEvetsFromList(link.ways.get(link.ways.get(aSwitch.id).from.id).allEvents);
                     }
                 }
                 //soonestEndTime will be updated later as events are executed
@@ -132,9 +136,10 @@ public class DiscreteEventSimulator extends Simulator {
                 result = host.physicalLayer.EXBs[0].soonestEndTime;
             }
 
-            if (host.physicalLayer.links.get(host.id).ways.get(host.id).soonestEndTime >= currentTime
-                    && host.physicalLayer.links.get(host.id).ways.get(host.id).soonestEndTime < result){
-                result = host.physicalLayer.links.get(host.id).ways.get(host.id).soonestEndTime;
+            Link link = host.physicalLayer.links.get(host.id);
+            if (link.ways.get(link.ways.get(host.id).from.id).soonestEndTime >= currentTime
+                    && link.ways.get(link.ways.get(host.id).from.id).soonestEndTime < result){
+                result = link.ways.get(link.ways.get(host.id).from.id).soonestEndTime;
             }
         }
 
@@ -153,7 +158,7 @@ public class DiscreteEventSimulator extends Simulator {
 
                 for(Link link : aSwitch.physicalLayer.links.values()) {
 
-                    if (link.ways.get(aSwitch.id).soonestEndTime >= currentTime && link.ways.get(aSwitch.id).soonestEndTime < result) {
+                    if (link.ways.get(link.ways.get(aSwitch.id).from.id).soonestEndTime >= currentTime && link.ways.get(link.ways.get(aSwitch.id).from.id).soonestEndTime < result) {
                         result = link.ways.get(aSwitch.id).soonestEndTime;
                     }
                 }

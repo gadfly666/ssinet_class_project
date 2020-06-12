@@ -26,6 +26,7 @@ public class Way extends Element {
         this.from = from;
         this.to = to;
         this.link = link;
+        this.state = new W0();
         from.physicalLayer.notConnectedExitBuffer().ifPresent(
                 exitBuffer -> exitBuffer.nodeId = to.id
         );
@@ -52,6 +53,8 @@ public class Way extends Element {
                 packet.state.act();
                 Host host = (Host) to;
                 host.receive(packet);
+                this.packet = null;
+                this.getNextState();
                 System.out.println("received");
             }
         }

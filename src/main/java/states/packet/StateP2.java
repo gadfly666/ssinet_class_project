@@ -31,7 +31,6 @@ public class StateP2 extends State {
             leavingEXBEvent.startTime = physicalLayer.sim.time();
             leavingEXBEvent.endTime = physicalLayer.sim.time();
             exb.insertEvents(leavingEXBEvent);
-            physicalLayer.sq.updateSoonestEndTime();
         }
     }
 }

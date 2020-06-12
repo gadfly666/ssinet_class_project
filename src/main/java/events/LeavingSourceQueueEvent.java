@@ -29,22 +29,13 @@ public class LeavingSourceQueueEvent extends Event {
 		this.physicalLayer = physicalLayer;
 		this.p = p;
 	}
-
-//	public LeavingSourceQueueEvent(Element elem, Packet p)
-//	{
-//		this.elem = elem;
-//		this.pid = p.id;
-//	}
 	
 	@Override
 	public void execute()
 	{
 		physicalLayer.sq.removeExecutedEvent(this);
 		SourceQueue sQueue = physicalLayer.sq;
-		//Sq inside host so there is only one exb
 		ExitBuffer exb = physicalLayer.EXBs[0];//Kiem tra xem EXB co cho trong hay khong?
-		//int index = exb.indexOfEmpty();
-		//if(index < Constant.QUEUE_SIZE
 		if(exb.insertPacket(p)){
 			p.state = new StateP2(physicalLayer, exb);
 			p.state.act();

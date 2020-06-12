@@ -29,8 +29,8 @@ public class LeavingEXBEvent extends Event {
         exb.removeExecutedEvent(this);//go bo su kien nay ra khoi danh sach cac su kien
 
         Packet p = exb.allPackets[0];
-        Node currentNode = link.ways.get(exb.nodeId).from;
-        Way way = link.ways.get(currentNode.id);
+//        Node currentNode = link.ways.get(exb.nodeId).from;
+        Way way =link.ways.get(exb.nodeId);
 
         if(Objects.nonNull(p)){
             way.packet = p;
