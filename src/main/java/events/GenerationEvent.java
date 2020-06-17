@@ -19,30 +19,17 @@ public class GenerationEvent extends Event {
         this.sq = sq;
     }
 
-//	public GenerationEvent(Element elem)
-//	{
-//		this.elem = elem;
-//	}
-
     @Override
 
     public void execute() {
         //if(elem instanceof SourceQueue)
         {
-            System.out.println("Gen event");
             sq.removeExecutedEvent(this);
             Packet p = this.sq.generateNewPacket(this.startTime);
-            p.id = ((DiscreteEventSimulator)sq.phyLayer.sim).numSent ++;
             if (p == null) return;
 
             sq.getNextState();
             sq.state.act();
-
-
-//            Event event = new GenerationEvent(sq.phyLayer, sq);
-//            event.startTime = (long)sq.getNextPacketTime();
-//            event.endTime = (long)sq.getNextPacketTime();
-//            this.sq.insertEvents(event);
 
         }
     }

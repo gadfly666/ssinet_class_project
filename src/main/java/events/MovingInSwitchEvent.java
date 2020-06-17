@@ -32,7 +32,6 @@ public class MovingInSwitchEvent extends Event {
         entranceBuffer.removeExecutedEvent(this);
         Packet p = entranceBuffer.popTopPacket() ;
         if(Objects.nonNull(p)){
-            System.out.println("Moving in switch");
             p.state = new StateP5(entranceBuffer, exitBuffer, p);
             p.state.act();
         }

@@ -28,7 +28,10 @@ public class Way extends Element {
         this.link = link;
         this.state = new W0();
         from.physicalLayer.notConnectedExitBuffer().ifPresent(
-                exitBuffer -> exitBuffer.nodeId = to.id
+                exitBuffer -> {
+                    exitBuffer.nodeId = to.id;
+                    exitBuffer.link = link;
+                }
         );
         to.physicalLayer.notConnectedEntranceBuffer().ifPresent(
                 entranceBuffer -> {
@@ -39,7 +42,6 @@ public class Way extends Element {
 
     public void transferPacket() {
         if (Objects.nonNull(packet)) {
-            System.out.println("Transfer");
             if (to instanceof Switch) {
                 to.physicalLayer.findByNodeId(from.id).ifPresent(
                         (entranceBuffer) -> {
@@ -55,7 +57,6 @@ public class Way extends Element {
                 host.receive(packet);
                 this.packet = null;
                 this.getNextState();
-                System.out.println("received");
             }
         }
     }
@@ -64,15 +65,15 @@ public class Way extends Element {
         if (!Objects.isNull(packet)) {
             state = new W1(this);
         }
-        if(Objects.isNull(packet)){
+        if (Objects.isNull(packet)) {
             to.physicalLayer.findByNodeId(from.id).ifPresent(
-                entranceBuffer -> {
-                    if(entranceBuffer.indexOfEmptySlot() < Constant.QUEUE_SIZE) {
-                        state = new W0();
-                    } else {
-                        state = new W2();
+                    entranceBuffer -> {
+                        if (entranceBuffer.indexOfEmptySlot() < Constant.QUEUE_SIZE) {
+                            state = new W0();
+                        } else {
+                            state = new W2();
+                        }
                     }
-                }
             );
         }
 

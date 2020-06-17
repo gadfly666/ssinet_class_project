@@ -61,7 +61,6 @@ public abstract class Element {
 			return;
 		}
 		soonestEndTime = allEvents.get(0).endTime;
-		System.out.println("added Eveent " + allEvents.get(0).getClass() + " SoonestTime: " + soonestEndTime);
 	}
 
 	public void removeExecutedEvent(Event ev)

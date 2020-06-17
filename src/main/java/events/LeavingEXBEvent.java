@@ -42,5 +42,6 @@ public class LeavingEXBEvent extends Event {
             exb.allPackets[i] = exb.allPackets[i + 1];
         }
         exb.allPackets[Constant.QUEUE_SIZE - 1] = null;
+        exb.getNextState();
     }
 }

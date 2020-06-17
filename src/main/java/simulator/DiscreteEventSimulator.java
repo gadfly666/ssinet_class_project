@@ -16,7 +16,7 @@ import network.host.Host;
 
 public class DiscreteEventSimulator extends Simulator {
     public int numReceived = 0;
-    public long receivedPacket[];
+    public long receivedPacketPerUnit[];
     public int numSent = 0;
     public int numLoss = 0;
     public long totalPacketTime = 0;
@@ -32,7 +32,7 @@ public class DiscreteEventSimulator extends Simulator {
         this.isLimit = isLimit;
         this.verbose = verbose;
         this.timeLimit = timeLimit;
-        this.receivedPacket = new long[(int) (timeLimit / Constant.EXPERIMENT_INTERVAL + 1)];
+        this.receivedPacketPerUnit = new long[(int) (timeLimit / Constant.EXPERIMENT_INTERVAL + 1)];
     }
 
     public double getTime() {
@@ -45,17 +45,23 @@ public class DiscreteEventSimulator extends Simulator {
 
     public void start() {
         while (currentTime <= timeLimit) {
+            long startTime = System.currentTimeMillis();
+            int lastPercentage = 0;
             currentEvents = new ArrayList<Event>();
             //Loc ra tat ca cac event sap ket thuc o cac thiet bi
             addCurrentEventsFromDevices(currentTime);
             //
             for (Event e : currentEvents) {
                 e.execute();
-                System.out.println("Executed: " + e.toString());
             }
             currentTime = selectNextCurrentTime(currentTime);
-            System.out.println("current time: " + currentTime);
+            int percentage = (int) currentTime / (int) Constant.EXPERIMENT_INTERVAL;
+            if (percentage > lastPercentage) {
+                lastPercentage = percentage;
+                StdOut.printProgress("Progress", startTime, (long) timeLimit, currentTime);
+            }
         }
+        StdOut.print("\r");
     }
 
     public boolean isVerbose() {
@@ -96,9 +102,9 @@ public class DiscreteEventSimulator extends Simulator {
         List<Switch> allSwitches = this.network.getSwitches();
         for (Switch aSwitch : allSwitches) {
             for (int i = 0; i < aSwitch.physicalLayer.EXBs.length; i++) {
-                for(Link link : aSwitch.physicalLayer.links.values()) {
+                for (Link link : aSwitch.physicalLayer.links.values()) {
                     Way way = link.ways.get(link.ways.get(aSwitch.id).from.id);
-                    if (way.soonestEndTime == currentTime ) {
+                    if (way.soonestEndTime == currentTime) {
                         addCurrentEvetsFromList(link.ways.get(link.ways.get(aSwitch.id).from.id).allEvents);
                     }
                 }
@@ -138,7 +144,7 @@ public class DiscreteEventSimulator extends Simulator {
 
             Link link = host.physicalLayer.links.get(host.id);
             if (link.ways.get(link.ways.get(host.id).from.id).soonestEndTime >= currentTime
-                    && link.ways.get(link.ways.get(host.id).from.id).soonestEndTime < result){
+                    && link.ways.get(link.ways.get(host.id).from.id).soonestEndTime < result) {
                 result = link.ways.get(link.ways.get(host.id).from.id).soonestEndTime;
             }
         }
@@ -156,7 +162,7 @@ public class DiscreteEventSimulator extends Simulator {
                     result = aSwitch.physicalLayer.ENBs[i].soonestEndTime;
                 }
 
-                for(Link link : aSwitch.physicalLayer.links.values()) {
+                for (Link link : aSwitch.physicalLayer.links.values()) {
 
                     if (link.ways.get(link.ways.get(aSwitch.id).from.id).soonestEndTime >= currentTime && link.ways.get(link.ways.get(aSwitch.id).from.id).soonestEndTime < result) {
                         result = link.ways.get(aSwitch.id).soonestEndTime;

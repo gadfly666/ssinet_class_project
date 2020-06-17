@@ -9,6 +9,7 @@ import network.Link;
 import network.Node;
 import network.Packet;
 import network.layers.PhysicalLayer;
+import simulator.DiscreteEventSimulator;
 import states.State;
 import states.unidirectionalway.W0;
 
@@ -16,10 +17,12 @@ public class StateP2 extends State {
 	//�	State P2: the packet is located at EXB of the source node.
     private ExitBuffer exb;
     private PhysicalLayer physicalLayer;
+    private Packet p;
 
-    public StateP2(PhysicalLayer physicalLayer, ExitBuffer exb){
+    public StateP2(PhysicalLayer physicalLayer, ExitBuffer exb, Packet p){
         this.exb = exb;
         this.physicalLayer = physicalLayer;
+        this.p = p;
     }
 
     public void act(){
@@ -31,6 +34,7 @@ public class StateP2 extends State {
             leavingEXBEvent.startTime = physicalLayer.sim.time();
             leavingEXBEvent.endTime = physicalLayer.sim.time();
             exb.insertEvents(leavingEXBEvent);
+            p.id = ((DiscreteEventSimulator)physicalLayer.sim).numSent ++;
         }
     }
 }

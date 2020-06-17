@@ -15,6 +15,10 @@ import simulator.DiscreteEventSimulator;
  */
 public class Host extends Node {
 
+    protected int receivedPacketInNode;
+    protected double lastRx = 0; // thoi gian goi tin cuoi cung den host
+    protected double firstTx = -1; //la thoi gian goi tin dau tien den host
+
     public Host(int id) {
         super(id);
         this.physicalLayer = new PhysicalLayer(this);
@@ -44,17 +48,29 @@ public class Host extends Node {
     public void receive(Packet p) {
         double currentTime = ((DiscreteEventSimulator)this.physicalLayer.sim).getTime();
         ((DiscreteEventSimulator)this.physicalLayer.sim).numReceived++;
-////        if(this.receivedPacketInNode == 0) {
-//////            this.firstTx = packet.getStartTime();
-////            this.firstTx = currentTime;
-////            //System.out.println("Thoi gian goi tin dau tien den voi host " + self.id + " la: " + this.firstTx);
-////        }
-////        this.receivedPacketInNode ++;
-////        this.lastRx = currentTime;
-////        this.physicalLayer.simulator.receivedPacketPerUnit[(int)(currentTime / Constant.EXPERIMENT_INTERVAL + 1)]++;
+//        if(this.receivedPacketInNode == 0) {
+////            this.firstTx = packet.getStartTime();
+//            this.firstTx = currentTime;
+//            //System.out.println("Thoi gian goi tin dau tien den voi host " + self.id + " la: " + this.firstTx);
+//        }
+        this.receivedPacketInNode ++;
+//        this.lastRx = currentTime;
+        ((DiscreteEventSimulator)this.physicalLayer.sim).receivedPacketPerUnit[(int)(currentTime / Constant.EXPERIMENT_INTERVAL + 1)]++;
         p.setEndTime(currentTime);
-//
+
         ((DiscreteEventSimulator)this.physicalLayer.sim).totalPacketTime += p.timeTravel();
-       //todo xem nHop la gi
+        ((DiscreteEventSimulator)this.physicalLayer.sim).totalHop += p.nHop;
+    }
+
+    public int getReceivedPacketInNode() {
+        return receivedPacketInNode;
+    }
+
+    public double getLastRx() {
+        return lastRx;
+    }
+
+    public double getFirstTx() {
+        return firstTx;
     }
 }

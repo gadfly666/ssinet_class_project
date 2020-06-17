@@ -64,4 +64,8 @@ public abstract class LimitedBuffer extends Buffer {
         allPackets[Constant.QUEUE_SIZE - 1] = null;
         return p;
     }
+
+    public boolean isNotFull() {
+        return this.indexOfEmptySlot() < Constant.QUEUE_SIZE;
+    }
 }

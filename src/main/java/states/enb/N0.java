@@ -21,6 +21,7 @@ public class N0 extends State {
                     + entranceBuffer.way.link.propagationLatency()
                     + entranceBuffer.way.link.serialLatency(entranceBuffer.way.packet.getSize());
             entranceBuffer.way.insertEvents(e);
+            entranceBuffer.way.packet.nHop ++;
             entranceBuffer.way.packet = null;
             entranceBuffer.way.getNextState();
             entranceBuffer.getNextState();

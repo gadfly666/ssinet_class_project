@@ -23,7 +23,6 @@ public class ReachingENBEvent extends Event {
     @Override
     public void execute() {
         entranceBuffer.way.removeExecutedEvent(this);
-        System.out.println("REACH ENB" + p.id);
         p.state = new StateP4(entranceBuffer);
         p.state.act();
     }

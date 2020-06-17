@@ -35,9 +35,11 @@ public class LeavingSourceQueueEvent extends Event {
 	{
 		physicalLayer.sq.removeExecutedEvent(this);
 		SourceQueue sQueue = physicalLayer.sq;
-		ExitBuffer exb = physicalLayer.EXBs[0];//Kiem tra xem EXB co cho trong hay khong?
-		if(exb.insertPacket(p)){
-			p.state = new StateP2(physicalLayer, exb);
+		ExitBuffer exb = physicalLayer.EXBs[0];
+		if(exb.state instanceof X00 || exb.state instanceof X01){
+			exb.insertPacket(p);
+			exb.getNextState();
+			p.state = new StateP2(physicalLayer, exb, p);
 			p.state.act();
 			sQueue.allPackets.remove(p);
 			sQueue.getNextState();
