@@ -29,8 +29,7 @@ public class NetworkLayer {
 			Packet p;
 			// lay ra cac enb tu request list cua exb hien tai
 			for (EntranceBuffer enb : exitBuffer.getRequestList()) {
-				p = enb.popTopPacket();
-				// chon ra Inport co Packet co id nho nhat
+				p = enb.allPackets[0];
 				if (p != null && !(enb.hasEventOfPacket(p))) {
 					if (p.id < selectedId) {
 						selectedId = p.id;
@@ -41,17 +40,11 @@ public class NetworkLayer {
 			if(selectedENB != null) {
 				long time =this.node.physicalLayer.sim.time();
 				Event event = new MovingInSwitchEvent(time, time + Constant.SWITCH_CYCLE,
-						selectedENB, exitBuffer);
-				selectedENB.insertEvents(event); //chen them su kien moi vao
+						selectedENB, exitBuffer, selectedENB.popTopPacket());
+				selectedENB.insertEvents(event);
+//				exitBuffer.removeFromRequestList(selectedENB);//chen them su kien moi vao
 			}
 		}
-//		long time = this.node.physicalLayer.sim.time();
-//        EntranceBuffer enb = exitBuffer.requestEnbQueue.dequeue();
-//        if(enb != null){
-//			Event event = new MovingInSwitchEvent(time, time + Constant.SWITCH_CYCLE,
-//					enb, exitBuffer);
-//			enb.insertEvents(event); //chen them su kien moi vao
-//		}
     }
 
     public void route(EntranceBuffer entranceBuffer) {

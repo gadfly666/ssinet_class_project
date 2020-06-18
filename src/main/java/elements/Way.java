@@ -1,5 +1,6 @@
 package elements;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import config.Constant;
 import events.Event;
 import events.ReachingENBEvent;
@@ -76,7 +77,12 @@ public class Way extends Element {
                     }
             );
         }
+    }
 
+    public void insertPacket(Packet p) {
+        if(Objects.isNull(packet)) {
+            packet = p;
+        }
     }
 
 }

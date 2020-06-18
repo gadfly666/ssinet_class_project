@@ -32,25 +32,6 @@ public class StateP1 extends State {
 
     @Override
     public void act() {
-        SourceQueue sQueue = (SourceQueue) elem;
-        if (sQueue == null || this.p == null) {
-            return;
-        }
-        if (sQueue.allPackets == null) {
-            System.out.println("Empty packet in source queue error!\n");
-            return;
-        }
-        if (sQueue.allPackets.get(0) == this.p) {
-            Event e = new LeavingSourceQueueEvent(sQueue.phyLayer, this.p);
-            e.startTime = sQueue.phyLayer.sim.time();
-            e.endTime = e.startTime;
-            e.packet = this.p;
-            sQueue.insertEvents(e);
-			/*boolean successfullyInserted = exb.insertPacket(this.p);
-			if(successfullyInserted)
-			{
-				sQueue.allPackets.remove(0);
-			}*/
-        }
+
     }
 }

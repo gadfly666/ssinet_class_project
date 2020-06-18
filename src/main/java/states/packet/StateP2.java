@@ -34,7 +34,7 @@ public class StateP2 extends State {
             leavingEXBEvent.startTime = physicalLayer.sim.time();
             leavingEXBEvent.endTime = physicalLayer.sim.time();
             exb.insertEvents(leavingEXBEvent);
-            p.id = ((DiscreteEventSimulator)physicalLayer.sim).numSent ++;
+            p.id = ((DiscreteEventSimulator)physicalLayer.sim).numSent++;
         }
     }
 }

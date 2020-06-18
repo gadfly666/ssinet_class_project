@@ -20,17 +20,17 @@ public class MovingInSwitchEvent extends Event {
     public EntranceBuffer entranceBuffer;
     public ExitBuffer exitBuffer;
 
-    public MovingInSwitchEvent(long startTime, long endTime, EntranceBuffer entranceBuffer, ExitBuffer exitBuffer) {
+    public MovingInSwitchEvent(long startTime, long endTime, EntranceBuffer entranceBuffer, ExitBuffer exitBuffer, Packet p) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.entranceBuffer = entranceBuffer;
         this.exitBuffer = exitBuffer;
+        this.p = p;
     }
 
     @Override
     public void execute() {
         entranceBuffer.removeExecutedEvent(this);
-        Packet p = entranceBuffer.popTopPacket() ;
         if(Objects.nonNull(p)){
             p.state = new StateP5(entranceBuffer, exitBuffer, p);
             p.state.act();

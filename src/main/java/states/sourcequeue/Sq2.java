@@ -26,6 +26,5 @@ public class Sq2 extends Sq1 {
 		leavingSourceQueue.startTime = sq.phyLayer.sim.time();
 		leavingSourceQueue.endTime = sq.phyLayer.sim.time();
 		sq.insertEvents(leavingSourceQueue);
-		sq.getNextState();
 	}
 }

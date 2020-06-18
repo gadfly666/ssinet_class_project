@@ -33,7 +33,7 @@ public class LeavingEXBEvent extends Event {
         Way way =link.ways.get(exb.nodeId);
 
         if(Objects.nonNull(p)){
-            way.packet = p;
+            way.insertPacket(p);
             way.getNextState();
             way.state.act();
         }
